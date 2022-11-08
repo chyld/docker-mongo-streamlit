@@ -5,28 +5,34 @@ from pymongo import MongoClient
 client = MongoClient('172.17.0.1', 27017)
 events = client.eventdb.events
 
-statuses = set([e.split(':')[0] for e in events.distinct('status')])
-
-st.markdown('# Global Event Viewer')
-
-option = st.selectbox(
-    'Select an event?', statuses)
-
-st.write('You selected:', option)
+st.markdown('# Global Container Status')
 
 results = events.aggregate([
     {
         '$match': {
-            'status': option
+            'Type': 'container'
         }
     }, {
         '$group': {
-            '_id': '$Actor.Attributes.name', 
-            'count': {'$sum': 1}
+            '_id': {
+                'host': '$hostname', 
+                'container': '$Actor.Attributes.name'
+            }, 
+            'status': {
+                '$last': '$status'
+            }
+        }
+    }, {
+        '$project': {
+            '_id': 0, 
+            'host': '$_id.host', 
+            'container': '$_id.container', 
+            'status': '$status'
         }
     }
 ])
 
-df  = pd.DataFrame(results)
-df = df.set_index('_id')
-st.write(pd.DataFrame(df))
+df= pd.DataFrame(results)
+df = df.pivot(index='host', columns='container', values='status')
+st.dataframe(df.style.apply(lambda row: ["background-color: green" if cell in ['start'] else "background-color: red" for cell in row], axis=1))
+
