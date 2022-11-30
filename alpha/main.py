@@ -9,7 +9,7 @@ hostname = os.environ['HOSTNAME']
 
 dclient = docker.DockerClient()
 mclient = MongoClient(mongo_uri)
-events = mclient.dashboards.container_events
+stats = mclient.dashboards.container_stats
 
 try:
     while True:
@@ -17,9 +17,8 @@ try:
             receive_time = datetime.now()
             attrs = c.attrs
             data = attrs | {'hostname': hostname, 'receive_time': receive_time}
-            events.insert_one(data)
+            stats.insert_one(data)
             print(f'Data inserted @ {receive_time}')
         time.sleep(10)    
 except:
     print('An error occurred')
-
