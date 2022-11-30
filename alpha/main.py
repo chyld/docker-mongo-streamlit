@@ -8,11 +8,11 @@ hostname = os.environ['HOSTNAME']
 
 dclient = docker.DockerClient()
 mclient = MongoClient(mongo_uri)
-events = mclient.eventdb.events
+events = mclient.dashboards.container_events
 
 for event in dclient.events(decode=True):
     receive_time = datetime.now()
-    print(f'Received event @ {receive_time}')
     megaevent = event | {'hostname': hostname, 'receive_time': receive_time}
+    print(f'Received event @ {receive_time}')
     events.insert_one(megaevent)
 
