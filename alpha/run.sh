@@ -17,9 +17,8 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock      \
   -e MONGO_URI="$MONGO_URI"                                       \
   -e PYTHONUNBUFFERED=1                                           \
   -d                                                              \
-  event-logger:latest
+  stats-logger:latest
 
 # # #
 # #
 #
-
