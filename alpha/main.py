@@ -19,6 +19,6 @@ try:
             data = attrs | {'hostname': hostname, 'receive_time': receive_time}
             stats.insert_one(data)
             print(f'Data inserted @ {receive_time}')
-        time.sleep(30)    
+        time.sleep(60)    
 except:
     print('An error occurred')
