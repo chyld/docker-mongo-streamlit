@@ -1,4 +1,3 @@
 #!/bin/bash
 
-docker build -t event-logger:latest .
-
+docker build -t stats-logger:latest .
