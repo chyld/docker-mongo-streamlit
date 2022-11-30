@@ -19,3 +19,6 @@ docker run --rm --mount type=bind,source=/var/run/docker.sock,destination=/var/r
   -d                                                                                           \
   event-logger:latest
 
+# # #
+# #
+#
