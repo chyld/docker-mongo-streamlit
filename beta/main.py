@@ -2,24 +2,18 @@ import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 
-client = MongoClient('172.17.0.1', 27017)
-events = client.eventdb.events
+client = MongoClient("mongodb+srv://smartlogisticsMDB:Memento1@cluster0.nusmy.mongodb.net/admin?authSource=admin&replicaSet=atlas-s0y3vi-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
+stats = client.dashboards.container_stats
 
-st.markdown('# Global Container Status')
-
-results = events.aggregate([
+results = stats.aggregate([
     {
-        '$match': {
-            'Type': 'container'
-        }
-    }, {
         '$group': {
             '_id': {
                 'host': '$hostname', 
-                'container': '$Actor.Attributes.name'
+                'container': '$Config.Image'
             }, 
             'status': {
-                '$last': '$status'
+                '$last': '$State.Running'
             }
         }
     }, {
@@ -33,6 +27,11 @@ results = events.aggregate([
 ])
 
 df= pd.DataFrame(results)
+df.container = df.container.str[-20:]
 df = df.pivot(index='host', columns='container', values='status')
-st.dataframe(df.style.apply(lambda row: ["background-color: green" if cell in ['start'] else "background-color: red" for cell in row], axis=1))
+
+st.set_page_config(layout="wide")
+st.image("https://www.aggbusiness.com/sites/ropl-ab/files/2022-07/CEMEX%20USA_CA%20CNG%20Trucks.%20Southern%20California_Pic%20-%20CEMEX%20USA.jpg", width=300)
+st.markdown('# CEMEX - Image Recognition Container Status')
+st.table(df.style.apply(lambda row: ["background-color: green" if cell in [True] else "background-color: red" for cell in row], axis=1))
 
