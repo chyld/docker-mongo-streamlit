@@ -1,8 +1,11 @@
+import os
 import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://smartlogisticsMDB:Memento1@cluster0.nusmy.mongodb.net/admin?authSource=admin&replicaSet=atlas-s0y3vi-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
+mongo_uri = os.environ['MONGO_URI']
+
+client = MongoClient(mongo_uri)
 stats = client.dashboards.container_stats
 
 results = stats.aggregate([
