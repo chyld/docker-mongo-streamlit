@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 
 docker build -t stats-dashboard:latest .
