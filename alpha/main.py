@@ -9,7 +9,7 @@ hostname = os.environ["HOSTNAME"]
 
 dclient = docker.DockerClient()
 mclient = MongoClient(mongo_uri)
-stats = mclient.dashboards.container_stats
+stats = mclient.dashboards.container_status
 
 try:
     while True:

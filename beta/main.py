@@ -6,7 +6,7 @@ from pymongo import MongoClient
 mongo_uri = os.environ["MONGO_URI"]
 
 client = MongoClient(mongo_uri)
-stats = client.dashboards.container_stats
+stats = client.dashboards.container_status
 
 results = stats.aggregate(
     [
