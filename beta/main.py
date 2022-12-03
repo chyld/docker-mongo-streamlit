@@ -12,8 +12,8 @@ results = stats.aggregate(
     [
         {
             "$group": {
-                "_id": {"host": "$hostname", "container": "image"},
-                "status": {"$last": "is_running"},
+                "_id": {"host": "$hostname", "container": "$image"},
+                "status": {"$last": "$is_running"},
             }
         },
         {
@@ -28,7 +28,7 @@ results = stats.aggregate(
 )
 
 df = pd.DataFrame(results)
-df.container = df.container.str[-20:]
+# df.container = df.container.str[-20:]
 df = df.pivot(index="host", columns="container", values="status")
 
 st.set_page_config(layout="wide")
