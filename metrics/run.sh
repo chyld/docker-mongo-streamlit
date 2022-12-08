@@ -10,5 +10,11 @@ if [ -z "$MYAUTHKEY" ] ; then
   exit 1
 fi
 
-docker run --rm -d -e MYHOSTNAME="${MYHOSTNAME}" -e MYAUTHKEY="${MYAUTHKEY}" chyld/machinemetrics:latest
+docker run \
+  --net="host" \
+  --pid="host" \
+  -v "/:/host:ro,rslave" \
+  -e MYHOSTNAME="${MYHOSTNAME}" -e MYAUTHKEY="${MYAUTHKEY}" \
+  --path.rootfs=/host \
+  chyld/machinemetrics:latest
 
