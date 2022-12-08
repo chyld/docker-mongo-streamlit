@@ -10,7 +10,7 @@ if [ -z "$MYAUTHKEY" ] ; then
   exit 1
 fi
 
-docker run \
+docker run -d --rm \
   --net="host" \
   --pid="host" \
   -v "/:/host:ro,rslave" \
