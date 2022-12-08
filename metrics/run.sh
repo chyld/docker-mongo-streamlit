@@ -15,6 +15,6 @@ docker run \
   --pid="host" \
   -v "/:/host:ro,rslave" \
   -e MYHOSTNAME="${MYHOSTNAME}" -e MYAUTHKEY="${MYAUTHKEY}" \
-  --path.rootfs=/host \
-  chyld/machinemetrics:latest
+  chyld/machinemetrics:latest \
+  --path.rootfs=/host
 
